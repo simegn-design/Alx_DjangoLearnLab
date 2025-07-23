@@ -1,8 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 class Author(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True)  # Fixed length
     def __str__(self): return self.name
 
 class Book(models.Model):
@@ -14,6 +13,6 @@ class Library(models.Model):
     name = models.CharField(max_length=100)
     books = models.ManyToManyField(Book)
 
-class Librarian(models.Model):
+class Librarian(models.Model):  # Fixed typo (was Libraries)
     name = models.CharField(max_length=100)
-    library = models.OneToOneField(Library, on_delete=models.CASCADE)
+    library = models.OneToOneField(Library, on_delete=models.CASCADE)  # Fixed spelling

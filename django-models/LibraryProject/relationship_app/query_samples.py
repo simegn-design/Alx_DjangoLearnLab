@@ -8,4 +8,4 @@ def books_in_library(library_name):
     return Library.objects.get(name=library_name).books.all()
 
 def get_librarian(library_name):
-    return Librarian.objects.get(library__name=library_name)
+    return Librarian.objects.get(library__name=library_name)  # Exact match

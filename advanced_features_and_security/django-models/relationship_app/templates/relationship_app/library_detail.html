@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ object.name }}</title>
+</head>
+<body>
+    <h1>{{ object.name }}</h1>
+    <h2>Books:</h2>
+    <ul>
+        {% for book in object.books.all %}
+        <li>{{ book.title }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

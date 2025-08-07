@@ -11,18 +11,23 @@ class BookAPITests(APITestCase):
             author=self.author
         )
 
-    def test_book_list(self):
+    def test_book_list_status(self):
         url = reverse('book-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-    def test_book_filter(self):
-        url = reverse('book-list') + '?title__contains=Sample'
+    def test_book_search(self):
+        url = reverse('book-list') + '?search=Sample'
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
-    def test_book_create_auth(self):
+    def test_book_ordering(self):
+        url = reverse('book-list') + '?ordering=title'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_book_unauthorized(self):
         url = reverse('book-create')
         data = {
             "title": "New Book",
@@ -30,4 +35,4 @@ class BookAPITests(APITestCase):
             "author": self.author.id
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 403)  # Unauthorized
+        self.assertEqual(response.status_code, 401)  # Unauthorized

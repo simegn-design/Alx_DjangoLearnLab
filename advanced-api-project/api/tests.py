@@ -28,11 +28,11 @@ class BookAPITests(APITestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_create_book_unauthorized(self):
-        url = reverse('book-create')
+        url = reverse('book-list')  # Using book-list for creation
         data = {
             "title": "New Book",
             "publication_year": 2023,
             "author": self.author.id
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 401)  # Unauthorized
+        self.assertEqual(response.status_code, 401)  # Should be 401 for unauthorized

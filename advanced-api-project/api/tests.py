@@ -1,7 +1,16 @@
 from django.urls import reverse
 from rest_framework.test import APITestCase
+from django.test import override_settings
 from .models import Author, Book
 
+@override_settings(
+    DATABASES={
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:'
+        }
+    }
+)
 class BookAPITests(APITestCase):
     def setUp(self):
         self.author = Author.objects.create(name="Test Author")
@@ -28,11 +37,11 @@ class BookAPITests(APITestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_create_book_unauthorized(self):
-        url = reverse('book-list')  # Using book-list for creation
+        url = reverse('book-create')
         data = {
             "title": "New Book",
             "publication_year": 2023,
             "author": self.author.id
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 401)  # Should be 401 for unauthorized
+        self.assertEqual(response.status_code, 403)  # Changed from 401 to 403

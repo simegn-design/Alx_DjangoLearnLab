@@ -12,7 +12,7 @@ class BookFilter(filters.FilterSet):
             'publication_year': ['exact', 'gte', 'lte']
         }
 
-class BookListView(generics.ListCreateAPIView):
+class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filter_backends = [
@@ -23,12 +23,25 @@ class BookListView(generics.ListCreateAPIView):
     filterset_class = BookFilter
     search_fields = ['title', 'author__name']
     ordering_fields = ['title', 'publication_year']
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
+class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
+
+class BookDetailView(generics.RetrieveAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookUpdateView(generics.UpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class BookDeleteView(generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 class AuthorListView(generics.ListAPIView):
     queryset = Author.objects.all()

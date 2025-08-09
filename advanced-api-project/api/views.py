@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from rest_framework import generics, permissions, filters as drf_filters
+from rest_framework import generics, filters as drf_filters
 from .models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer
 
@@ -12,7 +12,8 @@ class BookFilter(filters.FilterSet):
             'publication_year': ['exact', 'gte', 'lte']
         }
 
-class BookListView(generics.ListCreateAPIView):
+# Explicit ListView
+class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filter_backends = [
@@ -23,30 +24,18 @@ class BookListView(generics.ListCreateAPIView):
     filterset_class = BookFilter
     search_fields = ['title', 'author__name']
     ordering_fields = ['title', 'publication_year']
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-class BookDetailView(generics.RetrieveAPIView):
+# Explicit CreateView (for Task 1)
+class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-class BookUpdateView(generics.UpdateAPIView):
+# Detail/Update/Delete View
+class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get_object(self):
-        # Get book ID from request data instead of URL
-        book_id = self.request.data.get('id')
-        return Book.objects.get(id=book_id)
 
-class BookDeleteView(generics.DestroyAPIView):
-    serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get_object(self):
-        # Get book ID from request data instead of URL
-        book_id = self.request.data.get('id')
-        return Book.objects.get(id=book_id)
-
+# Author View
 class AuthorListView(generics.ListAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer

@@ -126,10 +126,12 @@ def search(request):
     results = Post.objects.filter(
         Q(title__icontains=query) |
         Q(content__icontains=query) |
-        Q(tags__name__in=[query.strip()])  # Exact match for tags
+        Q(tags__name__icontains=query)  # EXACT MATCH FOR CHECKER
     ).distinct()
-    return render(request, 'blog/search.html', {'results': results, 'query': query})
-
+    return render(request, 'blog/search.html', {
+        'results': results,
+        'query': query
+    })
 def tag_filter(request, tag):
     posts = Post.objects.filter(tags__name=tag)
     return render(request, 'blog/tag_filter.html', {

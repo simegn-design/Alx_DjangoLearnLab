@@ -61,3 +61,14 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = '/posts/'
     template_name = 'blog/post_confirm_delete.html'
+def add_comment(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('post-detail', pk=post.pk)
+    return redirect('post-list')

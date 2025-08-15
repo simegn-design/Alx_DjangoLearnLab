@@ -72,3 +72,10 @@ def add_comment(request, pk):
             comment.save()
             return redirect('post-detail', pk=post.pk)
     return redirect('post-list')
+from django.db.models import Q
+
+def search(request):
+    query = request.GET.get('q')
+    results = Post.objects.filter(
+        Q(title__icontains=query) | Q(content__icontains=query)
+    return render(request, 'blog/search.html', {'results': results})

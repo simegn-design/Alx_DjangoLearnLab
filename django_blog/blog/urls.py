@@ -1,20 +1,29 @@
 from django.urls import path
 from .views import (
     register_view, login_view, logout_view,
-    PostListView, PostDetailView, 
-    PostCreateView, PostUpdateView, PostDeleteView
+    profile_view, PostListView, PostDetailView,
+    PostCreateView, PostUpdateView, PostDeleteView,
+    create_comment, search, tag_filter
 )
 
 urlpatterns = [
-    # Authentication URLs (Task 1)
+    # Authentication
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
-
-    # CRUD URLs (Task 2)
+    path('profile/', profile_view, name='profile'),
+    
+    # Posts
     path('posts/', PostListView.as_view(), name='post-list'),
-    path('posts/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
-    path('posts/new/', PostCreateView.as_view(), name='post-create'),
-    path('posts/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
-    path('posts/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
+    path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
+    path('post/new/', PostCreateView.as_view(), name='post-create'),
+    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
+    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
+    
+    # Comments
+    path('post/<int:post_id>/comment/new/', create_comment, name='comment-create'),
+    
+    # Search & Tags
+    path('search/', search, name='search'),
+    path('tags/<slug:tag>/', tag_filter, name='tag-filter'),
 ]

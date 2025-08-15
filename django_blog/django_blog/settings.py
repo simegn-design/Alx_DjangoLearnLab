@@ -3,7 +3,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-your-secret-key-here'  # Change this for production!
+SECRET_KEY = 'django-insecure-your-secret-key-here'
 DEBUG = True
 ALLOWED_HOSTS = []
 
@@ -51,6 +51,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'USER': '',      # Added empty USER
+        'PASSWORD': '',   # Added empty PASSWORD
+        'HOST': '',       # Added empty HOST
+        'PORT': '',       # Added empty PORT
     }
 }
 

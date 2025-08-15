@@ -7,7 +7,14 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ['content']
         widgets = {
-            'content': forms.Textarea(attrs={'rows': 3})
+            'content': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Your comment...'
+            })
+        }
+        labels = {
+            'content': ''  # Hide default label
         }
 
 class PostForm(forms.ModelForm):
@@ -15,5 +22,7 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'content', 'tags']
         widgets = {
-            'tags': TagWidget()
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'content': forms.Textarea(attrs={'class': 'form-control'}),
+            'tags': TagWidget(attrs={'class': 'form-control'})
         }
